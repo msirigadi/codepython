@@ -75,8 +75,9 @@ class BinarySearchNode:
             return self.data
 
     def calculate_sum(self):
-        elements = self.inorder_traversal()
-        return sum(elements)
+        left_sum = self.left.calculate_sum() if self.left else 0
+        right_sum = self.right.calculate_sum() if self.right else 0
+        return self.data + left_sum + right_sum
 
     def search(self, val):
         if val == self.data:
@@ -94,6 +95,33 @@ class BinarySearchNode:
             else:
                 return False
 
+    def delete(self, val):
+        if val < self.data:
+            if self.left:
+                self.left = self.left.delete(val)
+        elif val > self.data:
+            if self.right:
+                self.right = self.right.delete(val)
+        else:
+            if self.left is None and self.right is None:
+                return None
+            elif self.left is None:
+                return self.right
+            elif self.right is None:
+                return self.left
+
+            # Use min element from right subtree
+            #min_val = self.right.find_min()
+            #self.data = min_val
+            #self.right = self.right.delete(min_val)
+
+            # Alternatively - use max element from left subtre
+            max_val = self.left.find_max()
+            self.data = max_val
+            self.left = self.left.delete(max_val)
+
+        return self
+
 def build_tree(elements):
     root = BinarySearchNode(elements[0])
 
@@ -103,14 +131,16 @@ def build_tree(elements):
     return root
 
 if __name__ == '__main__':
-    numbers = [17, 4, 1, 20, 9, 23, 18, 34, 18, 4]
+    numbers = [32, 17, 41, 9, 29, 37, 47, 21, 33, 39, 45, 58, 25, 38, 50, 65]
     root_node = build_tree(numbers)
     print(root_node.inorder_traversal())
-    print(root_node.inorder_traversal())
+    print(root_node.preorder_traversal())
     print(root_node.postorder_traversal())
-    print("{} in Binary tree? {}".format(20, root_node.search(20)))
+    print("{} in Binary tree? {}".format(21, root_node.search(20)))
     print("{} in Binary tree? {}".format(51, root_node.search(51)))
     print("{} in Binary tree? {}".format(14, root_node.search(14)))
     print("Min element in tree:", root_node.find_min())
     print("Max element in tree:", root_node.find_max())
     print("Sum of element in tree:", root_node.calculate_sum())
+    root_node.delete(41)
+    print(root_node.inorder_traversal())
