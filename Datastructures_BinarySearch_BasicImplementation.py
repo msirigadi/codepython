@@ -1,6 +1,6 @@
 """
 Implement binary search technique
-For applying binary searcch, all the elements must be sorted
+For applying binary search, all the elements must be sorted
 """
 
 def binary_search(numbers_list, number_to_find):
