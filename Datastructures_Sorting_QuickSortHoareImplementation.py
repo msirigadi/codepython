@@ -25,7 +25,6 @@ def partition(elements, left, right):
     return right
 
 def quick_sort(elements, left, right):
-    #if left != right and left < right:
     if left < right:
         partition_index = partition(elements, left, right)
         quick_sort(elements, left, partition_index-1)
